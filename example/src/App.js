@@ -1,67 +1,38 @@
-import React, { Component, createRef } from "react";
+import React, { Component } from "react";
 
-import QuickPinchZoom, {
-  make2dTransformValue,
-  make3dTransformValue,
-  hasTranslate3DSupport
-} from "react-quick-pinch-zoom";
-
-const isSafari = /^((?!chrome|android).)*safari/i.test(
-  window.navigator.userAgent
-);
-
-const use3DTransform = hasTranslate3DSupport() && !isSafari;
-
-const makeTransformValue = use3DTransform
-  ? make3dTransformValue
-  : make2dTransformValue;
+import demos from "./demos";
 
 class App extends Component {
-  innerRef = createRef();
-
-  onUpdate = ({ x, y, scale }) => {
-    const { current: div } = this.innerRef;
-
-    if (div) {
-      div.style.setProperty(
-        "transform",
-        makeTransformValue({ x, y, scale }, use3DTransform)
-      );
-    }
+  state = {
+    currentIndex: 0,
+    component: null
   };
 
-  toggleWillChange = () => {
-    const { current: div } = this.innerRef;
+  componentDidMount(): void {
+    this._isMounted = true;
+    const { currentIndex } = this.state;
 
-    if (div) {
-      requestAnimationFrame(() => {
-        div.style.setProperty("will-change", "auto");
+    demos[currentIndex].component().then(({ default: component }) => {
+      if (this._isMounted) {
+        this.setState({ component });
+      }
+    });
+  }
 
-        requestAnimationFrame(() => {
-          div.style.setProperty("will-change", "transform");
-        });
-      });
-    }
-  };
+  componentWillUnmount(): void {
+    this._isMounted = false;
+  }
 
   render() {
+    const { component: DemoComponent } = this.state;
+
     return (
       <div>
-        <h1>Demo react-quick-pinch-zoom</h1>
-        <p>
-          To change the zoom on the desktop, <b>Ctrl + scroll</b>
-        </p>
-        <QuickPinchZoom
-          onZoomEnd={this.toggleWillChange}
-          onDragEnd={this.toggleWillChange}
-          onUpdate={this.onUpdate}
-        >
-          <div ref={this.innerRef}>
-            <h2>Text test</h2>
-            <p>And image</p>
-            <img src="https://user-images.githubusercontent.com/4661784/56037265-88219f00-5d37-11e9-95ef-9cb24be0190e.png" />
-          </div>
-        </QuickPinchZoom>
+        <h1>
+          Demos <code>react-quick-pinch-zoom</code>
+        </h1>
+
+        {DemoComponent ? <DemoComponent /> : null}
       </div>
     );
   }
