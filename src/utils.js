@@ -14,8 +14,8 @@ export const isZoomGesture = (wheelEvent: WheelEvent) =>
   isMac && wheelEvent.ctrlKey;
 
 export const cancelEvent = (event: any): void => {
-  event.stopPropagation();
-  event.preventDefault();
+  // event.stopPropagation();
+  // event.preventDefault();
 };
 
 const getDistance = (a: Point, b: Point): number => {
