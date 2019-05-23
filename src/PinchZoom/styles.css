@@ -1,6 +1,6 @@
 .a {
   overflow: hidden;
-  touch-action: none;
+  touch-action: auto;
 }
 .b {
   transform-origin: 0 0;

@@ -507,8 +507,8 @@ class PinchZoom extends Component<Props> {
   _getOffsetTouches(event: TouchEvent): Array<Point> {
     const { _html, _body } = this.props;
     const { top, left } = this._getContainerRect();
-    const scrollTop = _html.scrollTop || _body.scrollTop;
-    const scrollLeft = _html.scrollLeft || _body.scrollLeft;
+    const scrollTop = _html.scrollTop || _body ? _body.scrollTop : 0;
+    const scrollLeft = _html.scrollLeft || _body ? _body.scrollLeft : 0;
     const posTop = top + scrollTop;
     const posLeft = left + scrollLeft;
 
