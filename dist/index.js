@@ -201,10 +201,6 @@ var isZoomInteraction = function isZoomInteraction(i) {
 var isZoomGesture = function isZoomGesture(wheelEvent) {
   return isMac && wheelEvent.ctrlKey;
 };
-var cancelEvent = function cancelEvent(event) {
-  event.stopPropagation();
-  event.preventDefault();
-};
 
 var getDistance = function getDistance(a, b) {
   var x = a.x - b.x;
@@ -460,9 +456,7 @@ function (_Component) {
       if (_this._firstMove) {
         _this._updateInteraction(touchMoveEvent);
 
-        if (_this._interaction) {
-          cancelEvent(touchMoveEvent);
-        }
+        if (_this._interaction) ;
 
         _this._startTouches = getPageCoordinatesByTouches(touchMoveEvent.touches);
       } else {
@@ -475,7 +469,6 @@ function (_Component) {
         }
 
         if (_this._interaction) {
-          cancelEvent(touchMoveEvent);
 
           _this._update();
         }
@@ -488,8 +481,6 @@ function (_Component) {
       if (_this.props.shouldInterceptWheel(wheelEvent)) {
         return;
       }
-
-      cancelEvent(wheelEvent);
       var pageX = wheelEvent.pageX,
           pageY = wheelEvent.pageY,
           deltaY = wheelEvent.deltaY,
@@ -1300,7 +1291,6 @@ function (_Component) {
       }
 
       if (time - this._lastTouchStart < 300) {
-        cancelEvent(event);
 
         this._handleDoubleTap(event);
 
